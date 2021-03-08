@@ -3,8 +3,18 @@ import Question from '../models/Question.js';
 
 const router = express.Router();
 
+// CORS headers
+const setHeaders = (req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Max-Age", "1800");
+    res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader( "Access-Control-Allow-Methods", "POST, GET");
+    next();
+}
+
 // Generate 20 questions, pooled randomly
-router.get('/', async(req, res) => {
+router.get('/', setHeaders, async(req, res) => {
     try {
         // Questions Array
         const questions = [];
@@ -76,14 +86,13 @@ router.get('/', async(req, res) => {
 
         // Send result
         res.send(questions);
-        
     } catch(error) {
         res.status(500).send(error.message);
     }
 })
 
 // Add a New Question
-router.post('/', async(req, res) => {
+router.post('/', setHeaders, async(req, res) => {
     // Allow POST operation only if secret key is supplied correctly
     if(req.query.key === process.env.KEY) {
         const newQuestion = new Question({

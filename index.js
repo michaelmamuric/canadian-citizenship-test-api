@@ -12,7 +12,7 @@ const port = process.env.PORT || 4000;
 
 // Connect to the database
 try {
-    await mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true});
+    mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true});
     console.log('Connection successful');
 }
 // Show initial connection error, if any
